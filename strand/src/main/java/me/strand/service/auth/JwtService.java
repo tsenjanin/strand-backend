@@ -1,4 +1,4 @@
-package me.strand.service;
+package me.strand.service.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,5 +51,14 @@ public class JwtService {
         var claims = parseJwtToken(token);
 
         return claims.getExpiration().before(new Date());
+    }
+
+    public Optional<String> extractTokenFromHeader(String header) {
+        if (header == null || !header.startsWith("Bearer ")) {
+            return Optional.empty();
+        }
+
+        var token = header.substring(7).trim();
+        return Optional.of(token);
     }
 }
