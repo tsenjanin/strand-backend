@@ -1,6 +1,6 @@
 package me.strand.error;
 
-import me.strand.utils.Constants;
+import me.strand.utils.constants.Constants;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;

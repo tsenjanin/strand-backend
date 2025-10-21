@@ -5,7 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import me.strand.utils.Constants;
+import me.strand.utils.constants.Constants;
 import me.strand.utils.EnvironmentConstants;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
