@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import me.strand.utils.constants.Constants;
 import me.strand.utils.EnvironmentConstants;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -15,17 +14,18 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
+import static me.strand.utils.constants.Constants.*;
+
 @Service
 @RequiredArgsConstructor
 public class JwtService {
     private final Environment env;
 
-    // TODO: fix expiration date and issuedAt
     public String generateJwtToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .issuer(Constants.ISSUER)
+                .issuer(ISSUER)
                 .subject(subject)
-                .expiration(new Date())
+                .expiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_TTL))
                 .issuedAt(new Date())
                 .signWith(getSecretKey(), Jwts.SIG.HS512)
                 .claims(claims)
@@ -41,12 +41,6 @@ public class JwtService {
                 .getPayload();
     }
 
-    // TODO: add secret key to environment variables
-    private SecretKey getSecretKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(env.getProperty(EnvironmentConstants.JWT_SECRET_KEY)));
-    }
-
-    // TODO: date generation utils needed
     public Boolean isTokenExpired(String token) {
         var claims = parseJwtToken(token);
 
@@ -60,5 +54,9 @@ public class JwtService {
 
         var token = header.substring(7).trim();
         return Optional.of(token);
+    }
+
+    private SecretKey getSecretKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(env.getProperty(EnvironmentConstants.JWT_SECRET_KEY)));
     }
 }
