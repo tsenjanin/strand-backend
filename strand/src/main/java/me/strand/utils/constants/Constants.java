@@ -1,4 +1,4 @@
-package me.strand.utils;
+package me.strand.utils.constants;
 
 public class Constants {
 
