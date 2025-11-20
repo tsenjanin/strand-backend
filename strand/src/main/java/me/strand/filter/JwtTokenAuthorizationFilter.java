@@ -34,8 +34,9 @@ public class JwtTokenAuthorizationFilter extends OncePerRequestFilter {
         try {
             var accessToken = jwtService.extractTokenFromHeader(authHeader);
 
-            if (accessToken.isPresent() && jwtService.isTokenExpired(accessToken.get())) {
-                var userDetails = userDetailsService.loadUserByUsername(accessToken.get());
+            if (accessToken.isPresent() && !jwtService.isTokenExpired(accessToken.get())) {
+                var parsedToken = jwtService.parseJwtToken(accessToken.get());
+                var userDetails = userDetailsService.loadUserByUsername(parsedToken.getSubject());
 
                 response.addHeader("X-TOKEN", jwtService.generateJwtToken(
                         Map.of("Authorities", userDetails.getAuthorities()),

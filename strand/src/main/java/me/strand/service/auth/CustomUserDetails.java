@@ -1,22 +1,29 @@
 package me.strand.service.auth;
 
+import lombok.RequiredArgsConstructor;
 import me.strand.model.dto.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
+@RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
     private final User user;
-
-    public CustomUserDetails(User user) {
-        this.user = user;
-    }
+    private final List<String> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        var grantedAuthorities = new ArrayList<GrantedAuthority>();
+        roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
+
+        return grantedAuthorities;
     }
 
     @Override
@@ -26,6 +33,16 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getUsername();
+    }
+
+    public UUID getUserId() {
+        return user.getId();
+    }
+
+    public Boolean isMuted() {
+        var muteDuration =  user.getMuteDuration();
+
+        return muteDuration != null && muteDuration.isAfter(LocalDate.now());
     }
 }
