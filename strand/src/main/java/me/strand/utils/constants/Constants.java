@@ -7,9 +7,9 @@ public class Constants {
 
     public static final String ISSUER = "Strand Community";
 
-    public static final Integer SALT_LENGTH = 16;
-    public static final Integer ITERATIONS = 700_001;
-    public static final Integer KEY_LENGTH = 256;
+    // public static final Integer SALT_LENGTH = 16;
+    // public static final Integer ITERATIONS = 700_001;
+    // public static final Integer KEY_LENGTH = 256;
 
     public static final Long ACCESS_TOKEN_TTL = 600_000L;
 

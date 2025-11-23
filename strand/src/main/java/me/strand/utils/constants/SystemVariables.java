@@ -22,5 +22,5 @@ public class SystemVariables {
     public static final String MODERATION_RULESET = "1.No offensive words.";
 
     // Kafka specific variables
-    public static final String KAFKA_TOPIC = "strand";
+    public static final String KAFKA_TOPIC = "strand-topic";
 }
