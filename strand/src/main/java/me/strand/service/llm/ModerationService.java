@@ -2,19 +2,18 @@ package me.strand.service.llm;
 
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.models.responses.Response;
-import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.*;
 import lombok.RequiredArgsConstructor;
+import me.strand.model.rest.response.ModerationResponse;
 import org.springframework.stereotype.Service;
 
 import static me.strand.utils.constants.SystemVariables.*;
+import static me.strand.utils.mapper.ObjectMapperUtils.*;
 
 @Service
 @RequiredArgsConstructor
 public class ModerationService {
-
-    // TODO: This should be in scheduler along with apache kafka.
-    public String moderateContent(String content) {
+    public ModerationResponse moderateContent(String content) {
         try {
             OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
@@ -25,9 +24,12 @@ public class ModerationService {
                     .input(content)
                     .build();
 
-            Response response = client.responses().create(params);
+            var response = client.responses().create(params);
+            var responseOutputMessage = response.output().get(1).asMessage();
+            var responseContent = responseOutputMessage.content();
+            var responseOutputText = responseContent.getFirst().asOutputText();
 
-            return "";
+            return convertJsonToObject(responseOutputText.text(), ModerationResponse.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

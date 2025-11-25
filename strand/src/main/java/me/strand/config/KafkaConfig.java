@@ -1,5 +1,6 @@
 package me.strand.config;
 
+import jdk.jfr.Experimental;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.config.TopicConfig;
 import org.springframework.context.annotation.Bean;
@@ -8,16 +9,8 @@ import org.springframework.kafka.config.TopicBuilder;
 
 import static me.strand.utils.constants.SystemVariables.*;
 
-@Configuration
+@Experimental
 public class KafkaConfig {
-//    @Bean
-//    public KafkaAdmin kafkaAdmin(KafkaProperties kafkaProperties) {
-//        Map<String, Object> configs = new HashMap<>();
-//        configs.put(AdminClientConfig.)
-//
-//        return admin;
-//    }
-
     @Bean
     public NewTopic strand() {
         return TopicBuilder.name(KAFKA_TOPIC)
