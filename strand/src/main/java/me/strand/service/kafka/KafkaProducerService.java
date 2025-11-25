@@ -2,7 +2,6 @@ package me.strand.service.kafka;
 
 import lombok.RequiredArgsConstructor;
 import me.strand.model.rest.request.ModerationRequest;
-import me.strand.utils.mapper.ObjectMapperUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,7 +17,7 @@ public class KafkaProducerService {
     private final Logger logger = LoggerFactory.getLogger(KafkaProducerService.class);
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage(String topic, ModerationRequest moderationRequest) {
+    public void queueContent(String topic, ModerationRequest moderationRequest) {
         try {
             kafkaTemplate.send(topic, convertObjectToJson(moderationRequest));
 

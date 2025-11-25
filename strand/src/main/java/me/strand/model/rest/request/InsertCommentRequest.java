@@ -3,13 +3,13 @@ package me.strand.model.rest.request;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
+import java.util.UUID;
 
 @Data
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
-public class ModerationRequest {
-    private String type;
-    private String data;
+public class InsertCommentRequest {
+    private String content;
+    private UUID uuidPost;
 }

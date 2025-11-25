@@ -1,7 +1,11 @@
 package me.strand.service.kafka;
 
+import me.strand.model.rest.request.InsertCommentRequest;
+import me.strand.model.rest.request.InsertPostRequest;
 import me.strand.model.rest.request.ModerationRequest;
+import me.strand.service.comment.CommentService;
 import me.strand.service.llm.ModerationService;
+import me.strand.service.post.PostService;
 import me.strand.utils.mapper.ObjectMapperUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -29,10 +33,17 @@ public class KafkaConsumerService {
     private final Logger logger = LoggerFactory.getLogger(KafkaConsumerService.class);
     private final KafkaConsumer<String, String> consumer;
     private final ModerationService moderationService;
+    private final PostService postService;
+    private final CommentService commentService;
 
-    public KafkaConsumerService(ConsumerFactory<String, String> consumerFactory, ModerationService moderationService) {
+    public KafkaConsumerService(ConsumerFactory<String, String> consumerFactory,
+                                ModerationService moderationService, PostService postService,
+                                CommentService commentService
+    ) {
         this.consumer = (KafkaConsumer<String, String>) consumerFactory.createConsumer();
         this.moderationService = moderationService;
+        this.postService = postService;
+        this.commentService = commentService;
         this.consumer.subscribe(Collections.singletonList(KAFKA_TOPIC));
     }
 
@@ -48,14 +59,21 @@ public class KafkaConsumerService {
         for (ConsumerRecord<String, String> record : records) {
             try {
                 var result = moderationService.moderateContent(record.value());
+                var content = convertJsonToObject(record.value(), ModerationRequest.class);
+                var isRejected = result != null && Objects.equals(result.getResult(), "PASS");
 
-                if (result != null && Objects.equals(result.getResult(), "PASS")) {
-                    var content = convertJsonToObject(record.value(), ModerationRequest.class);
+                switch (content.getType()) {
+                    case "POST" -> {
+                        InsertPostRequest postRequest =
+                                convertJsonToObject(content.getData(), InsertPostRequest.class);
 
-                    // TODO: convert to either post or comment depending on type and insert
-                    switch (content.getType()) {
-                        case "POST" -> {}
-                        case "COMMENT" -> {}
+                        postService.insertPost(postRequest, isRejected);
+                    }
+                    case "COMMENT" -> {
+                        InsertCommentRequest commentRequest =
+                                convertJsonToObject(content.getData(), InsertCommentRequest.class);
+
+                        commentService.insertComment(commentRequest, isRejected);
                     }
                 }
 
