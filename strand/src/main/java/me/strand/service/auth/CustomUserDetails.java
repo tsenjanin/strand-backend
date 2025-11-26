@@ -36,8 +36,8 @@ public class CustomUserDetails implements UserDetails {
         return user.getUsername();
     }
 
-    public UUID getUserId() {
-        return user.getId();
+    public Integer getUserId() {
+        return user.getIdUser();
     }
 
     public Boolean isMuted() {

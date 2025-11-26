@@ -3,14 +3,13 @@
 
 <mapper namespace="me.strand.mapper.UserMapper">
     <select id="getUserByUsername" resultType="me.strand.model.dto.User">
-        SELECT
-            u.uuid,
-            username,
-            password,
-            email,
-            banned,
-            mute_duration,
-            id_user_group
+        SELECT id_user,
+               username,
+               password,
+               email,
+               banned,
+               mute_duration,
+               id_user_group
         FROM "user" AS u
         WHERE u.username = #{username}
     </select>

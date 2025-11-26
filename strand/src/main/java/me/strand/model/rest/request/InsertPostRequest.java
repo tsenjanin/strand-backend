@@ -12,5 +12,7 @@ import java.util.UUID;
 public class InsertPostRequest {
     private String title;
     private String content;
-    private UUID uuidTopic;
+    private Integer idTopic;
+    private Boolean hidden;
+    private Boolean locked;
 }

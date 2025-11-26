@@ -1,5 +1,6 @@
 package me.strand.service.kafka;
 
+import me.strand.model.ModerationResult;
 import me.strand.model.rest.request.InsertCommentRequest;
 import me.strand.model.rest.request.InsertPostRequest;
 import me.strand.model.rest.request.ModerationRequest;
@@ -7,11 +8,9 @@ import me.strand.service.comment.CommentService;
 import me.strand.service.llm.ModerationService;
 import me.strand.service.post.PostService;
 import me.strand.utils.mapper.ObjectMapperUtils;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.consumer.OffsetAndMetadata;
+import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -23,6 +22,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import static me.strand.utils.constants.SystemVariables.*;
 import static me.strand.utils.mapper.ObjectMapperUtils.*;
@@ -41,6 +41,15 @@ public class KafkaConsumerService {
                                 CommentService commentService
     ) {
         this.consumer = (KafkaConsumer<String, String>) consumerFactory.createConsumer();
+
+//                this.consumer = new KafkaConsumer<>(Map.of(
+//                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092",
+//                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
+//                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
+//                ConsumerConfig.GROUP_ID_CONFIG, "strand-consumer",
+//                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"
+//        ));
+
         this.moderationService = moderationService;
         this.postService = postService;
         this.commentService = commentService;
@@ -60,20 +69,24 @@ public class KafkaConsumerService {
             try {
                 var result = moderationService.moderateContent(record.value());
                 var content = convertJsonToObject(record.value(), ModerationRequest.class);
-                var isRejected = result != null && Objects.equals(result.getResult(), "PASS");
+                var isRejected = (result != null)
+                        && (Objects.equals(result.getResult(), ModerationResult.REJECT.name()));
 
                 switch (content.getType()) {
                     case "POST" -> {
                         InsertPostRequest postRequest =
                                 convertJsonToObject(content.getData(), InsertPostRequest.class);
+                        postRequest.setHidden(isRejected);
+                        postRequest.setLocked(isRejected);
 
-                        postService.insertPost(postRequest, isRejected);
+                        postService.insertPost(postRequest);
                     }
                     case "COMMENT" -> {
                         InsertCommentRequest commentRequest =
                                 convertJsonToObject(content.getData(), InsertCommentRequest.class);
+                        commentRequest.setHidden(isRejected);
 
-                        commentService.insertComment(commentRequest, isRejected);
+                        commentService.insertComment(commentRequest);
                     }
                 }
 

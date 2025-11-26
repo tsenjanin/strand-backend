@@ -11,5 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class InsertCommentRequest {
     private String content;
-    private UUID uuidPost;
+    private Integer idPost;
+    private Boolean hidden;
 }

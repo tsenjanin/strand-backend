@@ -124,4 +124,5 @@ public class SystemVariables {
 
     // Kafka specific variables
     public static final String KAFKA_TOPIC = "strand-topic";
+    public static final String KAFKA_CONSUMER = "strand-consumer";
 }
