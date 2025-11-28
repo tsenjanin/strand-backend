@@ -18,7 +18,7 @@ public class ErrorResponseBuilder {
 
         var httpStatus = getHttpStatus(error);
         errorMap.put(Constants.ERROR_RESPONSE_STATUS_CODE_KEY, httpStatus.value());
-        errorMap.put(Constants.ERROR_RESPONSE_ERROR_KEY, httpStatus.getReasonPhrase());
+        errorMap.put(Constants.ERROR_RESPONSE_ERROR_KEY, error.getMessage());
 
         var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {

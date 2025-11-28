@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static me.strand.utils.constants.SystemVariables.KAFKA_TOPIC;
+import static me.strand.utils.constants.SystemVariables.LLM_MODERATION_ENABLED;
 
 @RestController
 @RequestMapping("post")
@@ -26,6 +27,6 @@ public class PostController {
     public ResponseEntity<Void> insertPost(@ModelAttribute InsertPostRequest insertPostRequest) {
         kafkaProducerService.queueContent(KAFKA_TOPIC, ContentType.POST, insertPostRequest);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

@@ -23,7 +23,7 @@ public class CommentService {
             commentMapper.insertComment(insertCommentRequest);
         } catch (Exception e) {
             throw new ValidationException(
-                    errorResponseBuilder.build(errorProperties.getError(ErrorCode.INVALID_COMMENT_FORMAT))
+                    errorResponseBuilder.build(errorProperties.getError(ErrorCode.COMMENT_INSERTION_FAILED))
             );
         }
     }

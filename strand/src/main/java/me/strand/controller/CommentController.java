@@ -3,6 +3,7 @@ package me.strand.controller;
 import lombok.RequiredArgsConstructor;
 import me.strand.model.rest.request.ContentType;
 import me.strand.model.rest.request.InsertCommentRequest;
+import me.strand.service.comment.CommentService;
 import me.strand.service.kafka.KafkaProducerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,6 @@ public class CommentController {
     public ResponseEntity<Void> insertComment(@ModelAttribute InsertCommentRequest insertCommentRequest) {
         kafkaProducerService.queueContent(KAFKA_TOPIC, ContentType.COMMENT, insertCommentRequest);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

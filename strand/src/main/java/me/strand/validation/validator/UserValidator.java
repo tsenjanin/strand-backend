@@ -2,7 +2,6 @@ package me.strand.validation.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import me.strand.error.ErrorCode;
 import me.strand.error.ErrorProperties;

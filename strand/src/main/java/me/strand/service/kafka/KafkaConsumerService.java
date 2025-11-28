@@ -33,13 +33,12 @@ public class KafkaConsumerService {
     private final Logger logger = LoggerFactory.getLogger(KafkaConsumerService.class);
     private final KafkaConsumer<String, String> consumer;
     private final ModerationService moderationService;
-    private final PostService postService;
-    private final CommentService commentService;
+    private final KafkaUtils kafkaUtils;
 
     public KafkaConsumerService(ConsumerFactory<String, String> consumerFactory,
                                 ModerationService moderationService, PostService postService,
-                                CommentService commentService
-    ) {
+                                CommentService commentService,
+                                KafkaUtils kafkaUtils) {
         this.consumer = (KafkaConsumer<String, String>) consumerFactory.createConsumer();
 
 //                this.consumer = new KafkaConsumer<>(Map.of(
@@ -51,9 +50,8 @@ public class KafkaConsumerService {
 //        ));
 
         this.moderationService = moderationService;
-        this.postService = postService;
-        this.commentService = commentService;
         this.consumer.subscribe(Collections.singletonList(KAFKA_TOPIC));
+        this.kafkaUtils = kafkaUtils;
     }
 
     @Scheduled(fixedDelay = 10000L)
@@ -72,23 +70,7 @@ public class KafkaConsumerService {
                 var isRejected = (result != null)
                         && (Objects.equals(result.getResult(), ModerationResult.REJECT.name()));
 
-                switch (content.getType()) {
-                    case "POST" -> {
-                        InsertPostRequest postRequest =
-                                convertJsonToObject(content.getData(), InsertPostRequest.class);
-                        postRequest.setHidden(isRejected);
-                        postRequest.setLocked(isRejected);
-
-                        postService.insertPost(postRequest);
-                    }
-                    case "COMMENT" -> {
-                        InsertCommentRequest commentRequest =
-                                convertJsonToObject(content.getData(), InsertCommentRequest.class);
-                        commentRequest.setHidden(isRejected);
-
-                        commentService.insertComment(commentRequest);
-                    }
-                }
+                kafkaUtils.insertContent(content, isRejected);
 
                 consumer.commitSync(Map.of(
                         new TopicPartition(record.topic(), record.partition()),

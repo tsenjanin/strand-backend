@@ -11,7 +11,8 @@ public class RestControllerException extends RuntimeException {
     private final transient HttpStatus status;
 
     public RestControllerException(Map<String, Object> error) {
+        super(error.toString());
         this.error = error;
-        this.status = HttpStatus.valueOf((int) error.get("status"));
+        this.status = HttpStatus.valueOf((Integer) error.get("status"));
     }
 }
