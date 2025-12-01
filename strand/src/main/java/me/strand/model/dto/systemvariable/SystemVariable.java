@@ -1,4 +1,4 @@
-package me.strand.model.dto;
+package me.strand.model.dto.systemvariable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

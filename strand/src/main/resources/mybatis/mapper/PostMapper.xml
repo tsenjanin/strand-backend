@@ -2,11 +2,54 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="me.strand.mapper.PostMapper">
-    <insert id="insertPost"
-            parameterType="me.strand.model.rest.request.InsertPostRequest"
-            useGeneratedKeys="true"
+
+    <sql id="postSummaryQuery">
+        ${alias}id_post,
+        ${alias}title
+    </sql>
+
+    <resultMap id="postSummaryResultMap" type="PostSummary">
+        <id column="id_post" property="idPost" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="title" property="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="original_poster" property="originalPoster" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="insertPost" parameterType="InsertPostRequest" useGeneratedKeys="true"
     >
         INSERT INTO post (title, content, id_topic, hidden, locked)
         VALUES (#{title}, #{content}, #{idTopic}, #{hidden}, #{locked})
     </insert>
+
+    <select id="getMostRecentPostForSection" resultMap="postSummaryResultMap">
+        SELECT
+        <include refid="postSummaryQuery">
+            <property name="alias" value="p."/>
+        </include>,
+        u.username as original_poster
+        FROM post AS p
+            JOIN topic t ON t.id_topic = p.id_topic
+            JOIN subtopic st ON t.id_subtopic = st.id_subtopic
+            JOIN subsection ss ON st.id_subsection = ss.id_subsection
+            JOIN section s ON ss.id_section = s.id_section
+            JOIN "user" u on p.id_user = u.id_user
+        WHERE s.id_section = #{idSection}
+        ORDER BY p.tstamp DESC
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+
+    <select id="getRecentPosts" resultMap="postSummaryResultMap">
+        SELECT
+        <include refid="postSummaryQuery">
+            <property name="alias" value="p."/>
+        </include>,
+        u.username as original_poster
+        FROM post AS p
+            JOIN topic t ON t.id_topic = p.id_topic
+            JOIN subtopic st ON t.id_subtopic = st.id_subtopic
+            JOIN subsection ss ON st.id_subsection = ss.id_subsection
+            JOIN section s ON ss.id_section = s.id_section
+            JOIN "user" u on p.id_user = u.id_user
+        ORDER BY p.tstamp DESC
+        FETCH FIRST 4 ROWS ONLY
+    </select>
 </mapper>

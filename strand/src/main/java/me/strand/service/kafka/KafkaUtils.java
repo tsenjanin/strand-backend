@@ -1,7 +1,6 @@
 package me.strand.service.kafka;
 
 import lombok.RequiredArgsConstructor;
-import me.strand.model.ModerationResult;
 import me.strand.model.rest.request.InsertCommentRequest;
 import me.strand.model.rest.request.InsertPostRequest;
 import me.strand.model.rest.request.ModerationRequest;
@@ -10,9 +9,8 @@ import me.strand.service.post.PostService;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Objects;
 
-import static me.strand.utils.mapper.ObjectMapperUtils.convertJsonToObject;
+import static me.strand.utils.objectmapper.ObjectMapperUtils.convertJsonToObject;
 
 @Component
 @RequiredArgsConstructor

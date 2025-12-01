@@ -3,7 +3,7 @@ package me.strand.service.auth;
 import lombok.RequiredArgsConstructor;
 import me.strand.mapper.RoleMapper;
 import me.strand.mapper.UserMapper;
-import me.strand.model.dto.Role;
+import me.strand.model.dto.role.Role;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;

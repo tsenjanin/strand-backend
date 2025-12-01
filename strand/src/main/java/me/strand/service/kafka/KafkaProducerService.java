@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 import static me.strand.utils.constants.SystemVariables.*;
-import static me.strand.utils.mapper.ObjectMapperUtils.*;
+import static me.strand.utils.objectmapper.ObjectMapperUtils.*;
 
 @Service
 @RequiredArgsConstructor

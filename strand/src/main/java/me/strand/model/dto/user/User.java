@@ -1,9 +1,8 @@
-package me.strand.model.dto;
+package me.strand.model.dto.user;
 
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
 public class User {

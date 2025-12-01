@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="me.strand.mapper.SystemVariableMapper">
-    <select id="getSystemVariables" resultType="me.strand.model.dto.SystemVariable">
+    <select id="getSystemVariables" resultType="me.strand.model.dto.systemvariable.SystemVariable">
         SELECT name, value
         FROM system_variable
     </select>

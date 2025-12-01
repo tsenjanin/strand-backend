@@ -2,7 +2,7 @@ package me.strand.service.system;
 
 import lombok.RequiredArgsConstructor;
 import me.strand.mapper.SystemVariableMapper;
-import me.strand.model.dto.SystemVariable;
+import me.strand.model.dto.systemvariable.SystemVariable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;

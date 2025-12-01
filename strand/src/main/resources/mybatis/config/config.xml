@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <typeAliases>
+        <typeAlias type="me.strand.model.dto.view.mainpage.PostSummary" alias="PostSummary"/>
+        <typeAlias type="me.strand.model.rest.request.InsertPostRequest" alias="InsertPostRequest"/>
+        <typeAlias type="me.strand.model.dto.view.mainpage.SectionSummary" alias="SectionSummary"/>
+        <typeAlias type="me.strand.model.dto.view.mainpage.SubsectionSummary" alias="SubsectionSummary"/>
+        <typeAlias type="me.strand.model.dto.view.mainpage.SubtopicSummary" alias="SubtopicSummary"/>
+        <typeAlias type="me.strand.model.dto.view.mainpage.AnnouncementSummary" alias="AnnouncementSummary"/>
+        <typeAlias type="me.strand.model.dto.view.mainpage.StatisticsSummary" alias="StatisticsSummary"/>
+    </typeAliases>
+</configuration>

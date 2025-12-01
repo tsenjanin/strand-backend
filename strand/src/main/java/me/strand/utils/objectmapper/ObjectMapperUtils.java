@@ -1,4 +1,4 @@
-package me.strand.utils.mapper;
+package me.strand.utils.objectmapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

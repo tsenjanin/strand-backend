@@ -3,7 +3,6 @@ package me.strand.controller;
 import lombok.RequiredArgsConstructor;
 import me.strand.model.rest.request.ContentType;
 import me.strand.model.rest.request.InsertCommentRequest;
-import me.strand.service.comment.CommentService;
 import me.strand.service.kafka.KafkaProducerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

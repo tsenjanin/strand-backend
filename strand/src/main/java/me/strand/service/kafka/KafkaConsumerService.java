@@ -1,16 +1,12 @@
 package me.strand.service.kafka;
 
 import me.strand.model.ModerationResult;
-import me.strand.model.rest.request.InsertCommentRequest;
-import me.strand.model.rest.request.InsertPostRequest;
 import me.strand.model.rest.request.ModerationRequest;
 import me.strand.service.comment.CommentService;
 import me.strand.service.llm.ModerationService;
 import me.strand.service.post.PostService;
-import me.strand.utils.mapper.ObjectMapperUtils;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
-import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -22,10 +18,9 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import static me.strand.utils.constants.SystemVariables.*;
-import static me.strand.utils.mapper.ObjectMapperUtils.*;
+import static me.strand.utils.objectmapper.ObjectMapperUtils.*;
 
 @Service
 public class KafkaConsumerService {
