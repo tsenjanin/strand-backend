@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.strand.mapper.PostCommentMapper">
+    <resultMap id="postCommentsResultMap" type="PostCommentDetails">
+        <id column="id_post_comment" property="idPostComment" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="content" property="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="id_user" property="idUser" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="username" property="originalPoster" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="id_post" property="idPost" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="tstamp" property="tstamp" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getPostCommentsForPost" resultMap="postCommentsResultMap">
+        SELECT pc.id_post_comment,
+               pc.content,
+               pc.id_user,
+               u.username,
+               pc.id_post,
+               pc.tstamp
+        FROM post_comment AS pc
+                 JOIN post p ON p.id_post = pc.id_post
+                 JOIN "user" u ON pc.id_user = u.id_user
+        WHERE pc.id_post = #{idPost}
+          AND pc.hidden != TRUE
+    </select>
+</mapper>

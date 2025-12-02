@@ -10,7 +10,9 @@ public enum ErrorCode {
 
     CLASS_NOT_SUPPORTED("50000"),
 
-    UNKNOWN_KAFKA_ERROR("60000");
+    UNKNOWN_KAFKA_ERROR("60000"),
+
+    TEMPORARY_CODE("99999");
 
     private final String code;
 

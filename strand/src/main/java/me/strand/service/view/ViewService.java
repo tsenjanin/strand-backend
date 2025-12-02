@@ -6,9 +6,15 @@ import me.strand.error.ErrorProperties;
 import me.strand.error.ErrorResponseBuilder;
 import me.strand.exception.RestControllerException;
 import me.strand.mapper.*;
+import me.strand.model.dto.view.mainpage.PostSummary;
 import me.strand.model.dto.view.mainpage.StatisticsSummary;
+import me.strand.model.dto.view.mainpage.SubsectionSummary;
+import me.strand.model.dto.view.mainpage.SubtopicSummary;
+import me.strand.model.dto.view.post.PostDetails;
 import me.strand.model.rest.response.MainPageContentResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +27,7 @@ public class ViewService {
     private final StatisticsMapper statisticsMapper;
     private final SubtopicMapper subtopicMapper;
     private final PostMapper postMapper;
+    private final PostCommentMapper postCommentMapper;
 
     public MainPageContentResponse getMainPageContent() {
         try {
@@ -52,7 +59,28 @@ public class ViewService {
                     .build();
         } catch (Exception e) {
             throw new RestControllerException(errorResponseBuilder
-                    .build(errorProperties.getError(ErrorCode.CLASS_NOT_SUPPORTED)));
+                    .build(errorProperties.getError(ErrorCode.TEMPORARY_CODE)));
+        }
+    }
+
+    public List<SubtopicSummary> getSubsectionDetails(Integer idSubsection) {
+        return subtopicMapper.getSubtopicsForSubsection(idSubsection);
+    }
+
+    public List<PostSummary> getSubtopicPosts(Integer idSubtopic) {
+        return postMapper.getPostsForSubtopic(idSubtopic);
+    }
+
+    public PostDetails getPostDetails(Integer idPost) {
+        try {
+            var postDetails = postMapper.getPostDetails(idPost);
+            var postComments = postCommentMapper.getPostCommentsForPost(idPost);
+            postDetails.setComments(postComments);
+
+            return postDetails;
+        } catch (Exception e) {
+            throw new RestControllerException(errorResponseBuilder
+                    .build(errorProperties.getError(ErrorCode.TEMPORARY_CODE)));
         }
     }
 }

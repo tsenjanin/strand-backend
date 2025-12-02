@@ -8,15 +8,36 @@
         ${alias}title
     </sql>
 
+    <sql id="postDetailsQuery">
+        ${alias}id_post,
+        ${alias}title,
+        ${alias}content,
+        ${alias}locked,
+        ${alias}id_subtopic,
+        ${alias}id_user,
+        ${alias}tstamp
+    </sql>
+
     <resultMap id="postSummaryResultMap" type="PostSummary">
         <id column="id_post" property="idPost" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         <result column="title" property="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="original_poster" property="originalPoster" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="postDetailsResultMap" type="PostDetails">
+        <id column="id_post" property="idPost" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="title" property="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="content" property="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="locked" property="locked" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+        <result column="id_subtopic" property="idSubtopic" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="id_user" property="idUser" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="original_poster" property="originalPoster" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="tstamp" property="tstamp" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
     <insert id="insertPost" parameterType="InsertPostRequest" useGeneratedKeys="true"
     >
-        INSERT INTO post (title, content, id_topic, hidden, locked)
+        INSERT INTO post (title, content, id_subtopic, hidden, locked)
         VALUES (#{title}, #{content}, #{idTopic}, #{hidden}, #{locked})
     </insert>
 
@@ -27,8 +48,7 @@
         </include>,
         u.username as original_poster
         FROM post AS p
-            JOIN topic t ON t.id_topic = p.id_topic
-            JOIN subtopic st ON t.id_subtopic = st.id_subtopic
+            JOIN subtopic st ON st.id_subtopic = p.id_subtopic
             JOIN subsection ss ON st.id_subsection = ss.id_subsection
             JOIN section s ON ss.id_section = s.id_section
             JOIN "user" u on p.id_user = u.id_user
@@ -44,12 +64,42 @@
         </include>,
         u.username as original_poster
         FROM post AS p
-            JOIN topic t ON t.id_topic = p.id_topic
-            JOIN subtopic st ON t.id_subtopic = st.id_subtopic
+            JOIN subtopic st ON st.id_subtopic = p.id_subtopic
             JOIN subsection ss ON st.id_subsection = ss.id_subsection
             JOIN section s ON ss.id_section = s.id_section
             JOIN "user" u on p.id_user = u.id_user
+        WHERE p.hidden != TRUE
         ORDER BY p.tstamp DESC
         FETCH FIRST 4 ROWS ONLY
+    </select>
+
+    <select id="getPostsForSubtopic" resultMap="postSummaryResultMap">
+        SELECT
+        <include refid="postSummaryQuery">
+            <property name="alias" value="p."/>
+        </include>,
+        u.username as original_poster
+        FROM post AS p
+            JOIN subtopic st ON st.id_subtopic = p.id_subtopic
+            JOIN subsection ss ON st.id_subsection = ss.id_subsection
+            JOIN section s ON ss.id_section = s.id_section
+            JOIN "user" u on p.id_user = u.id_user
+        WHERE p.hidden != TRUE AND p.id_subtopic = #{idSubtopic}
+        ORDER BY p.tstamp DESC
+    </select>
+
+    <select id="getPostDetails" resultMap="postDetailsResultMap">
+        SELECT
+        <include refid="postDetailsQuery">
+            <property name="alias" value="p."/>
+        </include>,
+        u.username AS original_poster
+        FROM post AS p
+            JOIN subtopic st ON st.id_subtopic = p.id_subtopic
+            JOIN subsection ss ON st.id_subsection = ss.id_subsection
+            JOIN section s ON ss.id_section = s.id_section
+            JOIN "user" u on p.id_user = u.id_user
+        WHERE p.id_post = #{idPost}
+        ORDER BY p.tstamp DESC
     </select>
 </mapper>

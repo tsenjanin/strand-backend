@@ -11,5 +11,7 @@
         <typeAlias type="me.strand.model.dto.view.mainpage.SubtopicSummary" alias="SubtopicSummary"/>
         <typeAlias type="me.strand.model.dto.view.mainpage.AnnouncementSummary" alias="AnnouncementSummary"/>
         <typeAlias type="me.strand.model.dto.view.mainpage.StatisticsSummary" alias="StatisticsSummary"/>
+        <typeAlias type="me.strand.model.dto.view.post.PostCommentDetails" alias="PostCommentDetails"/>
+        <typeAlias type="me.strand.model.dto.view.post.PostDetails" alias="PostDetails"/>
     </typeAliases>
 </configuration>

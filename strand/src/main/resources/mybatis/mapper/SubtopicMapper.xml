@@ -4,7 +4,7 @@
 <mapper namespace="me.strand.mapper.SubtopicMapper">
     <select id="getSubtopicsForSubsection" resultType="SubtopicSummary">
         SELECT
-            s.id_subtopic,
+            s.id_subtopic as idSubtopic,
             s.title
         FROM subtopic as s
         WHERE s.id_subsection = #{idSubsection}
