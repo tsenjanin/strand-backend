@@ -8,7 +8,6 @@ import me.strand.exception.RestControllerException;
 import me.strand.mapper.*;
 import me.strand.model.dto.view.mainpage.PostSummary;
 import me.strand.model.dto.view.mainpage.StatisticsSummary;
-import me.strand.model.dto.view.mainpage.SubsectionSummary;
 import me.strand.model.dto.view.mainpage.SubtopicSummary;
 import me.strand.model.dto.view.post.PostDetails;
 import me.strand.model.rest.response.MainPageContentResponse;

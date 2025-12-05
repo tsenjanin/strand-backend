@@ -12,8 +12,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @MapperScan("me.strand.mapper")
 public class StrandApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(StrandApplication.class, args);
-	}
+    static void main(String[] args) {
+        SpringApplication.run(StrandApplication.class, args);
+    }
 
 }

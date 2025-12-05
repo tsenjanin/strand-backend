@@ -8,4 +8,10 @@
             s.title
         FROM section as s
     </select>
+
+    <insert id="insertSection" parameterType="InsertSectionRequest" useGeneratedKeys="true"
+    >
+        INSERT INTO section(title)
+        VALUES(#{title})
+    </insert>
 </mapper>

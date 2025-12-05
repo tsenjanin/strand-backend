@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InsertCommentRequest {
-    private String content;
-    private Integer idPost;
-    private Integer idUser;
-    private Boolean hidden;
+public class InsertSubtopicRequest {
+    private String title;
+    private String description;
+    private Integer idSection;
+    private Integer idSubsection;
 }

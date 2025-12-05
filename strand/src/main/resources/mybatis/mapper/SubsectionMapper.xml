@@ -9,4 +9,10 @@
         FROM subsection as s
         WHERE s.id_section = #{idSection}
     </select>
+
+    <insert id="insertSubsection" parameterType="InsertSubsectionRequest" useGeneratedKeys="true"
+    >
+        INSERT INTO subsection(title, description, id_section)
+        VALUES(#{title}, #{description}, #{idSection})
+    </insert>
 </mapper>

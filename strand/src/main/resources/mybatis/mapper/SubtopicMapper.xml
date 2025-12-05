@@ -9,4 +9,10 @@
         FROM subtopic as s
         WHERE s.id_subsection = #{idSubsection}
     </select>
+
+    <insert id="insertSubtopic" parameterType="InsertSubtopicRequest" useGeneratedKeys="true"
+    >
+        INSERT INTO subtopic(title, description, id_section, id_subsection)
+        VALUES(#{title}, #{description}, #{idSection}, #{idSubsection})
+    </insert>
 </mapper>

@@ -11,6 +11,15 @@
         <result column="tstamp" property="tstamp" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+
+    <insert id="insertComment"
+            parameterType="me.strand.model.rest.request.InsertCommentRequest"
+            useGeneratedKeys="true"
+    >
+        INSERT INTO post_comment (content, id_post, id_user, hidden)
+        VALUES (#{content}, #{idPost}, #{idUser}, #{hidden})
+    </insert>
+
     <select id="getPostCommentsForPost" resultMap="postCommentsResultMap">
         SELECT pc.id_post_comment,
                pc.content,
@@ -24,4 +33,10 @@
         WHERE pc.id_post = #{idPost}
           AND pc.hidden != TRUE
     </select>
+
+    <insert id="insertPostComment" parameterType="InsertPostCommentRequest" useGeneratedKeys="true"
+    >
+        INSERT INTO post_comment(content, id_post, id_user)
+        VALUES (#{content}, #{idPost}, #{idUser})
+    </insert>
 </mapper>
