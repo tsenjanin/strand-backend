@@ -14,8 +14,10 @@
         <typeAlias type="me.strand.model.dto.view.post.PostCommentDetails" alias="PostCommentDetails"/>
         <typeAlias type="me.strand.model.dto.view.post.PostDetails" alias="PostDetails"/>
         <typeAlias type="me.strand.model.rest.request.InsertSectionRequest" alias="InsertSectionRequest"/>
-        <typeAlias type="me.strand.model.rest.request.InsertPostCommentRequest" alias="InsertPostCommentRequest"/>
+        <typeAlias type="me.strand.model.rest.request.InsertCommentRequest" alias="InsertPostCommentRequest"/>
         <typeAlias type="me.strand.model.rest.request.InsertSubsectionRequest" alias="InsertSubsectionRequest"/>
         <typeAlias type="me.strand.model.rest.request.InsertSubtopicRequest" alias="InsertSubtopicRequest"/>
+        <typeAlias type="me.strand.model.llm.analytics.CommentAnalytics" alias="CommentAnalytics"/>
+        <typeAlias type="me.strand.model.llm.analytics.PostAnalytics" alias="PostAnalytics"/>
     </typeAliases>
 </configuration>

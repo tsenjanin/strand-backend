@@ -37,8 +37,8 @@
 
     <insert id="insertPost" parameterType="InsertPostRequest" useGeneratedKeys="true"
     >
-        INSERT INTO post (title, content, id_subtopic, hidden, locked)
-        VALUES (#{title}, #{content}, #{idTopic}, #{hidden}, #{locked})
+        INSERT INTO post (title, content, id_subtopic, id_user, hidden, locked)
+        VALUES (#{title}, #{content}, #{idSubtopic}, #{idUser}, #{hidden}, #{locked})
     </insert>
 
     <select id="getMostRecentPostForSection" resultMap="postSummaryResultMap">

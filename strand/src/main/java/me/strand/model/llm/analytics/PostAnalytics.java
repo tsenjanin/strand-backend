@@ -1,19 +1,16 @@
-package me.strand.model.rest.request;
+package me.strand.model.llm.analytics;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InsertPostRequest {
+public class PostAnalytics {
+    private Integer idPost;
     private String title;
     private String content;
-    private Integer idSubtopic;
-    private Integer idUser;
-    private Boolean hidden;
     private Boolean locked;
+    private Boolean hidden;
 }

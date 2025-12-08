@@ -1,4 +1,4 @@
-package me.strand.model.rest.response;
+package me.strand.model.llm.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

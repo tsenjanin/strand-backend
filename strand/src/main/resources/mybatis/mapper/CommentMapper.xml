@@ -33,10 +33,4 @@
         WHERE pc.id_post = #{idPost}
           AND pc.hidden != TRUE
     </select>
-
-    <insert id="insertPostComment" parameterType="InsertPostCommentRequest" useGeneratedKeys="true"
-    >
-        INSERT INTO post_comment(content, id_post, id_user)
-        VALUES (#{content}, #{idPost}, #{idUser})
-    </insert>
 </mapper>

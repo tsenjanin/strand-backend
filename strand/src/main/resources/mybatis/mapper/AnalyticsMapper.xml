@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.strand.mapper.AnalyticsMapper">
+    <resultMap id="postAnalytics" type="PostAnalytics">
+        <id column="id_post" property="idPost" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="title" property="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="content" property="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="locked" property="locked" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+        <result column="id_subtopic" property="idSubtopic" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="id_user" property="idUser" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="original_poster" property="originalPoster" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="tstamp" property="tstamp" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="commentAnalytics" type="CommentAnalytics">
+        <id column="id_post_comment" property="idPostComment" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="content" property="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="id_user" property="idUser" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="hidden" property="hidden" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <select id="getLastNPostsForAnalytics" resultMap="postAnalytics">
+        SELECT p.id_post,
+               p.title,
+               p.content,
+               p.locked,
+               p.hidden
+        FROM post AS p
+        WHERE p.id_user = #{idUser}
+        ORDER BY p.tstamp DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="getLastNCommentsForAnalytics" resultMap="commentAnalytics">
+        SELECT pc.id_post_comment,
+               pc.content,
+               pc.hidden
+        FROM post_comment as pc
+        WHERE pc.id_user = #{idUser}
+        ORDER BY pc.tstamp DESC
+        LIMIT #{limit}
+    </select>
+</mapper>

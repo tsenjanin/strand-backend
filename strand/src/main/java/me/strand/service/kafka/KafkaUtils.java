@@ -3,7 +3,7 @@ package me.strand.service.kafka;
 import lombok.RequiredArgsConstructor;
 import me.strand.model.rest.request.InsertCommentRequest;
 import me.strand.model.rest.request.InsertPostRequest;
-import me.strand.model.rest.request.ModerationRequest;
+import me.strand.model.llm.request.ModerationRequest;
 import me.strand.service.comment.CommentService;
 import me.strand.service.post.PostService;
 import org.springframework.stereotype.Component;

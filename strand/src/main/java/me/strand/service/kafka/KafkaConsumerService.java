@@ -1,9 +1,10 @@
 package me.strand.service.kafka;
 
-import me.strand.model.ModerationResult;
-import me.strand.model.rest.request.ModerationRequest;
+import me.strand.model.llm.enums.ModerationResult;
+import me.strand.model.llm.request.ModerationRequest;
+import me.strand.model.llm.response.ModerationResponse;
 import me.strand.service.comment.CommentService;
-import me.strand.service.llm.ModerationService;
+import me.strand.service.llm.LLMProcesingService;
 import me.strand.service.post.PostService;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
@@ -27,11 +28,11 @@ public class KafkaConsumerService {
 
     private final Logger logger = LoggerFactory.getLogger(KafkaConsumerService.class);
     private final KafkaConsumer<String, String> consumer;
-    private final ModerationService moderationService;
+    private final LLMProcesingService LLMProcesingService;
     private final KafkaUtils kafkaUtils;
 
     public KafkaConsumerService(ConsumerFactory<String, String> consumerFactory,
-                                ModerationService moderationService, PostService postService,
+                                LLMProcesingService LLMProcesingService, PostService postService,
                                 CommentService commentService,
                                 KafkaUtils kafkaUtils) {
         this.consumer = (KafkaConsumer<String, String>) consumerFactory.createConsumer();
@@ -44,7 +45,7 @@ public class KafkaConsumerService {
 //                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"
 //        ));
 
-        this.moderationService = moderationService;
+        this.LLMProcesingService = LLMProcesingService;
         this.consumer.subscribe(Collections.singletonList(KAFKA_TOPIC));
         this.kafkaUtils = kafkaUtils;
     }
@@ -60,7 +61,12 @@ public class KafkaConsumerService {
 
         for (ConsumerRecord<String, String> record : records) {
             try {
-                var result = moderationService.moderateContent(record.value());
+                var result = LLMProcesingService.processContent(
+                        record.value(),
+                        MODERATION_RULESET,
+                        GLOBAL_REASONING_EFFORT_MINIMAL,
+                        ModerationResponse.class
+                );
                 var content = convertJsonToObject(record.value(), ModerationRequest.class);
                 var isRejected = (result != null)
                         && (Objects.equals(result.getResult(), ModerationResult.REJECT.name()));

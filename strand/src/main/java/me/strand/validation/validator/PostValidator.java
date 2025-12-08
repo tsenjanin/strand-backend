@@ -7,21 +7,24 @@ import me.strand.error.ErrorCode;
 import me.strand.error.ErrorProperties;
 import me.strand.error.ErrorResponseBuilder;
 import me.strand.exception.ValidationException;
-import me.strand.validation.annotation.ValidUser;
+import me.strand.model.rest.request.InsertPostRequest;
+import me.strand.validation.annotation.ValidPost;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Supplier;
 
 @Component
 @RequiredArgsConstructor
-public class UserValidator implements ConstraintValidator<ValidUser, Object> {
+public class PostValidator implements ConstraintValidator<ValidPost, InsertPostRequest> {
     private final ErrorResponseBuilder errorResponseBuilder;
     private final ErrorProperties errorProperties;
 
     @Override
-    public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-        // check(() -> o.equals(), ErrorCode.SOME_ERROR);
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean isValid(InsertPostRequest request, ConstraintValidatorContext constraintValidatorContext) {
+        check(() -> !request.getTitle().isEmpty(), ErrorCode.POST_TITLE_EMPTY);
+        check(() -> !request.getContent().isEmpty(), ErrorCode.POST_CONTENT_EMPTY);
+
+        return true;
     }
 
     private void check(Supplier<Boolean> expression, ErrorCode errorCode) {
