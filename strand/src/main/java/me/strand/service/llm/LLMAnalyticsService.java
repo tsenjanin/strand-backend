@@ -1,4 +1,4 @@
-package me.strand.service.analytics;
+package me.strand.service.llm;
 
 import lombok.RequiredArgsConstructor;
 import me.strand.error.ErrorCode;
@@ -8,7 +8,7 @@ import me.strand.exception.RestControllerException;
 import me.strand.mapper.AnalyticsMapper;
 import me.strand.model.llm.enums.AnalysisType;
 import me.strand.model.llm.response.AnalyticsResponse;
-import me.strand.service.llm.LLMProcesingService;
+import me.strand.model.rest.request.AnalyzeContentRequest;
 import me.strand.service.view.ViewService;
 import org.springframework.stereotype.Service;
 
@@ -19,36 +19,40 @@ import static me.strand.utils.objectmapper.ObjectMapperUtils.*;
 
 @Service
 @RequiredArgsConstructor
-public class AnalyticsService {
+public class LLMAnalyticsService {
     private final ErrorProperties errorProperties;
     private final ErrorResponseBuilder errorResponseBuilder;
     private final AnalyticsMapper analyticsMapper;
     private final LLMProcesingService llmProcesingService;
     private final ViewService viewService;
 
-    public AnalyticsResponse analyzeContent(Integer idUser, Integer limit, Integer idPost, AnalysisType type) {
+    public AnalyticsResponse analyzeContent(AnalyzeContentRequest request) {
         try {
-            // TODO: add insert and logging for each analysis operation
-
-            return switch (type) {
+            return switch (request.getType()) {
                 case USER_POST_ANALYSIS -> {
-                    var content = analyticsMapper.getLastNPostsForAnalytics(idUser, limit);
+                    var content = analyticsMapper.getLastNPostsForAnalytics(request.getIdUser(), request.getLimit());
                     var result = processContent(content, CONTENT_ANALYTICS_INSTRUCTIONS);
-                    result.setIdUser(idUser);
+                    result.setIdUser(request.getIdUser());
+
+                    analyticsMapper.insertPostingBehaviourAnalysis(result);
 
                     yield result;
                 }
                 case USER_COMMENT_ANALYSIS -> {
-                    var content = analyticsMapper.getLastNCommentsForAnalytics(idUser, limit);
+                    var content = analyticsMapper.getLastNCommentsForAnalytics(request.getIdUser(), request.getLimit());
                     var result = processContent(content, CONTENT_ANALYTICS_INSTRUCTIONS);
-                    result.setIdUser(idUser);
+                    result.setIdUser(request.getIdUser());
+
+                    analyticsMapper.insertCommentingBehaviourAnalysis(result);
 
                     yield result;
                 }
                 case COMPLETE_POST_ANALYSIS -> {
-                    var content = viewService.getPostDetails(idPost);
+                    var content = viewService.getPostDetails(request.getIdPost());
                     var result = processContent(content, POST_ANALYTICS_INSTRUCTIONS);
-                    result.setIdPost(idPost);
+                    result.setIdPost(request.getIdPost());
+
+                    analyticsMapper.insertCompletePostBehaviourAnalysis(result);
 
                     yield result;
                 }

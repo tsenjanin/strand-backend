@@ -19,5 +19,6 @@
         <typeAlias type="me.strand.model.rest.request.InsertSubtopicRequest" alias="InsertSubtopicRequest"/>
         <typeAlias type="me.strand.model.llm.analytics.CommentAnalytics" alias="CommentAnalytics"/>
         <typeAlias type="me.strand.model.llm.analytics.PostAnalytics" alias="PostAnalytics"/>
+        <typeAlias type="me.strand.model.llm.response.AnalyticsResponse" alias="AnalyticsResponse"/>
     </typeAliases>
 </configuration>

@@ -41,4 +41,25 @@
         ORDER BY pc.tstamp DESC
         LIMIT #{limit}
     </select>
+    
+    <insert id="insertPostingBehaviourAnalysis"
+            useGeneratedKeys="true"
+            parameterType="AnalyticsResponse">
+        INSERT INTO llm_user_posting_behaviour_analysis(verdict, explanation, id_user)
+        VALUES (#{verdict}, #{explanation}, #{idUser})
+    </insert>
+
+    <insert id="insertCommentingBehaviourAnalysis"
+            useGeneratedKeys="true"
+            parameterType="AnalyticsResponse">
+        INSERT INTO llm_user_commenting_behaviour_analysis(verdict, explanation, id_user)
+        VALUES (#{verdict}, #{explanation}, #{idUser})
+    </insert>
+
+    <insert id="insertCompletePostBehaviourAnalysis"
+            useGeneratedKeys="true"
+            parameterType="AnalyticsResponse">
+        INSERT INTO llm_complete_post_behaviour_analysis(verdict, explanation, id_post)
+        VALUES (#{verdict}, #{explanation}, #{idUser})
+    </insert>
 </mapper>

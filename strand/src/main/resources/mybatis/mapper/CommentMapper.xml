@@ -13,7 +13,7 @@
 
 
     <insert id="insertComment"
-            parameterType="me.strand.model.rest.request.InsertCommentRequest"
+            parameterType="InsertPostCommentRequest"
             useGeneratedKeys="true"
     >
         INSERT INTO post_comment (content, id_post, id_user, hidden)
