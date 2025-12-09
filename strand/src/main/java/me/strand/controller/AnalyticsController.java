@@ -21,7 +21,7 @@ public class AnalyticsController {
     private final LLMAnalyticsService llmAnalyticsService;
 
     @GetMapping("content")
-    public ResponseEntity<AnalyticsResponse> analyseContent(@ModelAttribute AnalyzeContentRequest analyzeContentRequest,
+    public ResponseEntity<AnalyticsResponse> analyzeContent(@ModelAttribute AnalyzeContentRequest analyzeContentRequest,
                                                             @AuthenticationPrincipal CustomUserDetails userDetails,
                                                             HttpServletRequest request) {
         var response = llmAnalyticsService.analyzeContent(analyzeContentRequest);

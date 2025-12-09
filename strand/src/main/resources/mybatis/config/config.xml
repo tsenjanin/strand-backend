@@ -5,7 +5,6 @@
 <configuration>
     <typeAliases>
         <typeAlias type="me.strand.model.dto.view.mainpage.PostSummary" alias="PostSummary"/>
-        <typeAlias type="me.strand.model.rest.request.InsertPostRequest" alias="InsertPostRequest"/>
         <typeAlias type="me.strand.model.dto.view.mainpage.SectionSummary" alias="SectionSummary"/>
         <typeAlias type="me.strand.model.dto.view.mainpage.SubsectionSummary" alias="SubsectionSummary"/>
         <typeAlias type="me.strand.model.dto.view.mainpage.SubtopicSummary" alias="SubtopicSummary"/>
@@ -17,6 +16,7 @@
         <typeAlias type="me.strand.model.rest.request.InsertCommentRequest" alias="InsertPostCommentRequest"/>
         <typeAlias type="me.strand.model.rest.request.InsertSubsectionRequest" alias="InsertSubsectionRequest"/>
         <typeAlias type="me.strand.model.rest.request.InsertSubtopicRequest" alias="InsertSubtopicRequest"/>
+        <typeAlias type="me.strand.model.rest.request.InsertPostRequest" alias="InsertPostRequest"/>
         <typeAlias type="me.strand.model.llm.analytics.CommentAnalytics" alias="CommentAnalytics"/>
         <typeAlias type="me.strand.model.llm.analytics.PostAnalytics" alias="PostAnalytics"/>
         <typeAlias type="me.strand.model.llm.response.AnalyticsResponse" alias="AnalyticsResponse"/>
