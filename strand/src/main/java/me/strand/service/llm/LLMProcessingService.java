@@ -12,7 +12,7 @@ import static me.strand.utils.objectmapper.ObjectMapperUtils.*;
 
 @Service
 @RequiredArgsConstructor
-public class LLMProcesingService {
+public class LLMProcessingService {
     public <T> T processContent(String content, String instructions, Reasoning reasoning, Class<T> clazz) {
         try {
             OpenAIClient client = OpenAIOkHttpClient.fromEnv();

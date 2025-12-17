@@ -6,7 +6,6 @@ import me.strand.error.ErrorProperties;
 import me.strand.error.ErrorResponseBuilder;
 import me.strand.exception.RestControllerException;
 import me.strand.mapper.AnalyticsMapper;
-import me.strand.model.llm.enums.AnalysisType;
 import me.strand.model.llm.response.AnalyticsResponse;
 import me.strand.model.rest.request.AnalyzeContentRequest;
 import me.strand.service.view.ViewService;
@@ -23,7 +22,7 @@ public class LLMAnalyticsService {
     private final ErrorProperties errorProperties;
     private final ErrorResponseBuilder errorResponseBuilder;
     private final AnalyticsMapper analyticsMapper;
-    private final LLMProcesingService llmProcesingService;
+    private final LLMProcessingService llmProcessingService;
     private final ViewService viewService;
 
     public AnalyticsResponse analyzeContent(AnalyzeContentRequest request) {
@@ -64,7 +63,7 @@ public class LLMAnalyticsService {
     }
 
     private AnalyticsResponse processContent(Object content, String instructions) throws IOException {
-        return llmProcesingService.processContent(
+        return llmProcessingService.processContent(
                 convertObjectToJson(content),
                 instructions,
                 GLOBAL_REASONING_EFFORT_HIGH,

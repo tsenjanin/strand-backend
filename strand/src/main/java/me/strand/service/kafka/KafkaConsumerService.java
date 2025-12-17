@@ -4,7 +4,7 @@ import me.strand.model.llm.enums.ModerationResult;
 import me.strand.model.llm.request.ModerationRequest;
 import me.strand.model.llm.response.ModerationResponse;
 import me.strand.service.comment.CommentService;
-import me.strand.service.llm.LLMProcesingService;
+import me.strand.service.llm.LLMProcessingService;
 import me.strand.service.post.PostService;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
@@ -28,11 +28,11 @@ public class KafkaConsumerService {
 
     private final Logger logger = LoggerFactory.getLogger(KafkaConsumerService.class);
     private final KafkaConsumer<String, String> consumer;
-    private final LLMProcesingService LLMProcesingService;
+    private final LLMProcessingService LLMProcessingService;
     private final KafkaUtils kafkaUtils;
 
     public KafkaConsumerService(ConsumerFactory<String, String> consumerFactory,
-                                LLMProcesingService LLMProcesingService, PostService postService,
+                                LLMProcessingService LLMProcessingService, PostService postService,
                                 CommentService commentService,
                                 KafkaUtils kafkaUtils) {
         this.consumer = (KafkaConsumer<String, String>) consumerFactory.createConsumer();
@@ -45,7 +45,7 @@ public class KafkaConsumerService {
 //                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"
 //        ));
 
-        this.LLMProcesingService = LLMProcesingService;
+        this.LLMProcessingService = LLMProcessingService;
         this.consumer.subscribe(Collections.singletonList(KAFKA_TOPIC));
         this.kafkaUtils = kafkaUtils;
     }
@@ -61,7 +61,7 @@ public class KafkaConsumerService {
 
         for (ConsumerRecord<String, String> record : records) {
             try {
-                var result = LLMProcesingService.processContent(
+                var result = LLMProcessingService.processContent(
                         record.value(),
                         MODERATION_RULESET,
                         GLOBAL_REASONING_EFFORT_MINIMAL,

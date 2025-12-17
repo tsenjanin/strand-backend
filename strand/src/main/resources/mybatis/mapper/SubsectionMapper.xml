@@ -15,4 +15,29 @@
         INSERT INTO subsection(title, description, id_section)
         VALUES(#{title}, #{description}, #{idSection})
     </insert>
+
+    <update id="updateSubsection" parameterType="UpdateSectionRequest" >
+        UPDATE subsection
+        SET title       = #{title},
+            description = #{description}
+        WHERE id_section = #{idSection}
+    </update>
+
+    <update id="hideSubsection">
+        UPDATE subsection
+        SET hidden = #{isHidden}
+        WHERE id_subsection = #{idSubsection}
+    </update>
+
+    <update id="lockSubsection">
+        UPDATE subsection
+        SET locked = #{isLocked}
+        WHERE id_subsection = #{idSubsection}
+    </update>
+
+    <delete id="deleteSubsection" parameterType="java.lang.Integer" >
+        DELETE
+        FROM subsection
+        WHERE id_subsection = #{idSubsection}
+    </delete>
 </mapper>

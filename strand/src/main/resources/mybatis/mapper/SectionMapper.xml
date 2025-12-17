@@ -14,4 +14,18 @@
         INSERT INTO section(title)
         VALUES(#{title})
     </insert>
+
+    <update id="updateSection" parameterType="UpdateSectionRequest" >
+        UPDATE section
+        SET
+            title = #{title},
+            hidden = #{hidden}
+        where id_section = #{idSection}
+    </update>
+
+    <delete id="deleteSection" parameterType="java.lang.Integer" >
+        delete
+        from section
+        where id_section = #{idSection}
+    </delete>
 </mapper>
